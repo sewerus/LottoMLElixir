@@ -5,6 +5,11 @@ defmodule Games.ElementsPrediction do
   Returns predicted elements with the biggest scores.
   For examples, let's take 2 draws with winning elements: 1, 2, 3 and 2, 3, 4.
   Draws are represented by a matrix:
+  ┌                                                 ┐
+  │     1.0     1.0     1.0     0.0     0.0     0.0 │
+  │     0.0     1.0     1.0     1.0     0.0     0.0 │
+  └                                                 ┘
+
 
   Matrix for present elements:
   ┌                                                 ┐
