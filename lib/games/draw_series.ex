@@ -1,5 +1,5 @@
 defmodule Games.DrawSeries do
-  require Games.Game
+  require Scripts.DefaultOptions
 
   @doc ~S"""
   Returns total benefit for all draws. For example:
@@ -20,11 +20,11 @@ defmodule Games.DrawSeries do
   """
   def total_benefit(all_draws, present_weights, absent_weights, options \\ %{}) do
     available_numbers_in_draw =
-      options[:available_numbers_in_draw] || Games.Game.available_numbers_in_draw()
+      options[:available_numbers_in_draw] || Scripts.DefaultOptions.available_numbers_in_draw()
 
-    elements_in_draw = options[:elements_in_draw] || Games.Game.elements_in_draw()
-    single_cost = options[:single_cost] || Games.Game.single_cost()
-    prizes = options[:prizes] || Games.Game.prizes()
+    elements_in_draw = options[:elements_in_draw] || Scripts.DefaultOptions.elements_in_draw()
+    single_cost = options[:single_cost] || Scripts.DefaultOptions.single_cost()
+    prizes = options[:prizes] || Scripts.DefaultOptions.prizes()
 
     all_draws_matrix = all_draws |> Games.DrawSeries.draw_sets_to_matrix()
     needed_draws_for_weights = needed_draws_for_weights(present_weights)

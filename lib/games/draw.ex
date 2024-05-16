@@ -1,5 +1,5 @@
 defmodule Games.Draw do
-  require Games.Game
+  require Scripts.DefaultOptions
 
   @doc ~S"""
   Returns benefit of a draw based on prize and cost
@@ -14,8 +14,8 @@ defmodule Games.Draw do
 
   """
   def benefit(elements, winning_elements, options \\ %{}) do
-    prizes = options[:prizes] || Games.Game.prizes()
-    single_cost = options[:single_cost] || Games.Game.single_cost()
+    prizes = options[:prizes] || Scripts.DefaultOptions.prizes()
+    single_cost = options[:single_cost] || Scripts.DefaultOptions.single_cost()
     prize(elements, winning_elements, prizes) - single_cost
   end
 
@@ -48,7 +48,7 @@ defmodule Games.Draw do
   def to_matrix(elements) do
     Enum.reduce(
       elements,
-      Matrex.zeros(1, Games.Game.available_numbers_in_draw()),
+      Matrex.zeros(1, Scripts.DefaultOptions.available_numbers_in_draw()),
       fn number, row -> row |> Matrex.set(1, number, 1) end
     )
   end

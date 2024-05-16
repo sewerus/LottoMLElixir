@@ -1,5 +1,5 @@
 defmodule Games.ElementsPrediction do
-  require Games.Game
+  require Scripts.DefaultOptions
 
   @doc ~S"""
   Returns predicted elements with the biggest scores.
@@ -42,7 +42,7 @@ defmodule Games.ElementsPrediction do
         absent_weights,
         options \\ %{}
       ) do
-    elements_in_draw = options[:elements_in_draw] || Games.Game.elements_in_draw()
+    elements_in_draw = options[:elements_in_draw] || Scripts.DefaultOptions.elements_in_draw()
     present_values = Matrex.multiply(draws, present_weights)
     absent_values = Matrex.multiply(negated_matrix(draws), absent_weights)
     total_values = Matrex.add(present_values, absent_values)
