@@ -29,10 +29,28 @@ defmodule Generations.GenerationsRunner do
          show_results,
          options
        ) do
-    best_child =
-      Generations.Generation.find_best_child(all_draws, present_weights, absent_weights, options)
+    [training_draws, testing_draws] = split_draws(all_draws, options)
 
-    show_results.(g_index, g_target, best_child)
+    best_child =
+      Generations.Generation.find_best_child(
+        training_draws,
+        present_weights,
+        absent_weights,
+        options
+      )
+
+    testing_prizes =
+      options[:testing_prizes] || options[:prizes] || Scripts.DefaultOptions.prizes()
+
+    testing_score =
+      Games.DrawSeries.total_benefit(
+        testing_draws,
+        best_child[:present_weights],
+        best_child[:absent_weights],
+        %{prizes: testing_prizes}
+      )
+
+    show_results.(g_index, g_target, best_child, testing_score)
     run(g_target, g_index + 1, all_draws, best_child, show_results, options)
   end
 
@@ -70,5 +88,13 @@ defmodule Generations.GenerationsRunner do
         Scripts.DefaultOptions.analysed_draws_in_prediction()
 
     Matrex.fill(analysed_draws_in_prediction, available_numbers_in_draw, 0)
+  end
+
+  defp split_draws(all_draws, options) do
+    testing_length =
+      options[:taken_draws_as_testing_set] || Scripts.DefaultOptions.taken_draws_as_testing_set()
+
+    training_length = length(all_draws) - testing_length
+    [all_draws |> Enum.take(training_length), all_draws |> Enum.take(-testing_length)]
   end
 end
